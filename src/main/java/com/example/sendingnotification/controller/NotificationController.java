@@ -1,6 +1,6 @@
 package com.example.sendingnotification.controller;
 
-import com.example.sendingnotification.FirebaseMessagingService;
+import com.example.sendingnotification.service.FirebaseMessagingService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class NotificationController {
             @RequestParam("title") String title,
             @RequestParam("body") String body,
             @RequestParam("image") String image
-    ) throws FirebaseMessagingException {
+    ) {
         firebaseMessagingService.sendNotification(token,title,body,image);
         return new ResponseEntity<>("Notification send....", HttpStatus.OK);
     }
