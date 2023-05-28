@@ -1,14 +1,14 @@
 package com.example.sendingnotification.controller;
 
+import com.example.sendingnotification.dto.request.NotificationRequest;
+import com.example.sendingnotification.dto.response.SimpleResponse;
 import com.example.sendingnotification.service.FirebaseMessagingService;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/sending-notification")
@@ -20,15 +20,12 @@ public class NotificationController {
         this.firebaseMessagingService = firebaseMessagingService;
     }
 
-    @PostMapping
-    ResponseEntity<?> sendingNotification(
-            @RequestParam("token") String token,
-            @RequestParam("title") String title,
-            @RequestParam("body") String body,
-            @RequestParam("image") String image
-    ) {
-        firebaseMessagingService.sendNotification(token,title,body,image);
-        return new ResponseEntity<>("Notification send....", HttpStatus.OK);
+    @PostMapping("/token")
+    ResponseEntity<?> sendingNotificationByToken(
+            @RequestBody NotificationRequest request
+            ) {
+        SimpleResponse simpleResponse = firebaseMessagingService.sendNotificationByToken(request);
+        return new ResponseEntity<>(simpleResponse, HttpStatus.OK);
     }
 
 }
